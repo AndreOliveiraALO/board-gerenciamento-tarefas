@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Changeset para criar tabela BOARDS_COLUMNS -->
+    <changeSet id="202508310835" author="andre">
+        <comment>Criação da tabela boards_columns</comment>
+
+        <createTable tableName="boards_columns">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="column_order" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="kind" type="VARCHAR(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="board_id" type="BIGINT">
+                <constraints nullable="false" referencedTableName="boards" referencedColumnNames="id" foreignKeyName="boards__boards_columns_fk" deleteCascade="true"/>
+            </column>
+        </createTable>
+
+        <!-- Criar unique constraint equivalente a unique_board_id_order -->
+        <addUniqueConstraint tableName="boards_columns"
+                             columnNames="board_id, column_order"
+                             constraintName="unique_board_id_order"/>
+
+        <!-- Rollback -->
+        <rollback>
+            <dropTable tableName="boards_columns"/>
+        </rollback>
+
+    </changeSet>
+
+</databaseChangeLog>

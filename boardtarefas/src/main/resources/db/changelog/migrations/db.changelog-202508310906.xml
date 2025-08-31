@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Changeset para criar tabela CARDS -->
+    <changeSet id="202508310906" author="andre">
+        <comment>Criação da tabela cards</comment>
+
+        <createTable tableName="cards">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="board_column_id" type="BIGINT">
+                <constraints nullable="false"
+                             referencedTableName="boards_columns"
+                             referencedColumnNames="id"
+                             foreignKeyName="boards_columns__cards_fk"
+                             deleteCascade="true"/>
+            </column>
+        </createTable>
+
+        <!-- Rollback -->
+        <rollback>
+            <dropTable tableName="cards"/>
+        </rollback>
+
+    </changeSet>
+
+</databaseChangeLog>

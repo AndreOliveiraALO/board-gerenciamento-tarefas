@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Changeset para criar tabela BLOCKS -->
+    <changeSet id="202508310927" author="andre">
+        <comment>Criação da tabela blocks</comment>
+
+        <createTable tableName="blocks">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="blocked_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="block_reason" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="unblocked_at" type="TIMESTAMP"/>
+            <column name="unblock_reason" type="VARCHAR(255)"/>
+            <column name="card_id" type="BIGINT">
+                <constraints nullable="false"
+                             referencedTableName="cards"
+                             referencedColumnNames="id"
+                             foreignKeyName="cards__blocks_fk"
+                             deleteCascade="true"/>
+            </column>
+        </createTable>
+
+        <!-- Rollback -->
+        <rollback>
+            <dropTable tableName="blocks"/>
+        </rollback>
+
+    </changeSet>
+
+</databaseChangeLog>
