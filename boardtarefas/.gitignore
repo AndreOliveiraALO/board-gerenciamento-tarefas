@@ -1,0 +1,66 @@
+# ==============================
+# Maven
+# ==============================
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+*.log
+
+# Diretórios de dependências (não versionar)
+/.m2/
+/node_modules/
+
+# ==============================
+# Java
+# ==============================
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+*.bak
+
+# ==============================
+# IDEs
+# ==============================
+# VS Code
+.vscode/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# ==============================
+# Sistema Operacional
+# ==============================
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ==============================
+# Liquibase / DB
+# ==============================
+# Ignore changelog backups if any
+*.backup
+*.sql~
+*.orig
+
+# ==============================
+# Outros
+# ==============================
+# Arquivos sensíveis ou de configuração local
+*.env
+*.properties.local
