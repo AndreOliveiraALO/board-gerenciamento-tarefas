@@ -11,12 +11,25 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <mainClass>com.dio.santander.App</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>       
         <!-- oracle -->
         <dependency>
-            <groupId>com</groupId>
-            <artifactId>ojdbc6</artifactId>
-            <version>11</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.6.0</version>
         </dependency>
         <!-- Liquibase -->
         <dependency>
