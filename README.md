@@ -1,5 +1,5 @@
 # 📌 BoardTarefas
-![License](https://img.shields.io/badge/license-MIT-lightgrey)
+[![NPM](https://img.shields.io/npm/l/react)](https://github.com/AndreOliveiraALO/board-gerenciamento-tarefas/blob/main/LICENSE)
 
 Projeto desenvolvido no Bootcamp **DIO + Santander**, com o objetivo de reproduzir um **quadro de gerenciamento de tarefas** (estilo Kanban).
 
