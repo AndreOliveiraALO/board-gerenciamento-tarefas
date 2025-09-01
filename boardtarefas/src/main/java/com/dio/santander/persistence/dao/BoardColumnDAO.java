@@ -39,7 +39,7 @@ public class BoardColumnDAO {
 
     public BoardColumnEntity insert(final BoardColumnEntity entity) throws SQLException {
         // Usando RETURNING id para capturar o auto incremento
-        var sql = "INSERT INTO boards_columns (name, \"order\", kind, board_id) VALUES (?, ?, ?, ?) RETURNING id;";
+        var sql = "INSERT INTO boards_columns (name, column_order, kind, board_id) VALUES (?, ?, ?, ?) RETURNING id;";
         
         try (var statement = connection.prepareStatement(sql)) {
             var i = 1;
@@ -60,7 +60,7 @@ public class BoardColumnDAO {
 
     public List<BoardColumnEntity> findByBoardId(final Long boardId) throws SQLException{
         List<BoardColumnEntity> entities = new ArrayList<>();
-        var sql = "SELECT id, name, `order`, kind FROM BOARDS_COLUMNS WHERE board_id = ? ORDER BY `order`";
+        var sql = "SELECT id, name, column_order, kind FROM BOARDS_COLUMNS WHERE board_id = ? ORDER BY column_order";
         try(var statement = connection.prepareStatement(sql)){
             statement.setLong(1, boardId);
             statement.executeQuery();
@@ -69,7 +69,7 @@ public class BoardColumnDAO {
                 var entity = new BoardColumnEntity();
                 entity.setId(resultSet.getLong("id"));
                 entity.setName(resultSet.getString("name"));
-                entity.setOrder(resultSet.getInt("order"));
+                entity.setOrder(resultSet.getInt("column_order"));
                 entity.setKind(findByName(resultSet.getString("kind")));
                 entities.add(entity);
             }
@@ -89,7 +89,7 @@ public class BoardColumnDAO {
                               WHERE c.board_column_id = bc.id) cards_amount
                   FROM BOARDS_COLUMNS bc
                  WHERE board_id = ?
-                 ORDER BY `order`;
+                 ORDER BY column_order;
                 """;
         try(var statement = connection.prepareStatement(sql)){
             statement.setLong(1, boardId);
