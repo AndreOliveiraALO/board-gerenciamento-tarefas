@@ -13,7 +13,6 @@ import com.dio.santander.service.BoardQueryService;
 import com.dio.santander.service.CardQueryService;
 import com.dio.santander.service.CardService;
 
-//@AllArgsConstructor
 public class BoardMenu {
 
     private final Scanner scanner = new Scanner(System.in).useDelimiter("\n");
@@ -38,8 +37,8 @@ public class BoardMenu {
                 System.out.println("7 - Ver coluna com cards");
                 System.out.println("8 - Ver card");
                 System.out.println("9 - Voltar para o menu anterior um card");
-                System.out.println("10 - Sair");
-                option = scanner.nextInt();
+                System.out.println("10 - Sair");                
+                option = Integer.parseInt(scanner.nextLine());
                 switch (option) {
                     case 1 -> createCard();
                     case 2 -> moveCardToNextColumn();
@@ -63,9 +62,9 @@ public class BoardMenu {
     private void createCard() throws SQLException{
         var card = new CardEntity();
         System.out.println("Informe o título do card");
-        card.setTitle(scanner.next());
+        card.setTitle(scanner.nextLine()); // padronizando para nextLine
         System.out.println("Informe a descrição do card");
-        card.setDescription(scanner.next());
+        card.setDescription(scanner.nextLine()); // padronizando para nextLine
         card.setBoardColumn(entity.getInitialColumn());
         try(var connection = getConnection()){
             new CardService(connection).create(card);
@@ -74,7 +73,7 @@ public class BoardMenu {
 
     private void moveCardToNextColumn() throws SQLException {
         System.out.println("Informe o id do card que deseja mover para a próxima coluna");
-        var cardId = scanner.nextLong();
+        var cardId = Long.parseLong(scanner.nextLine());
         var boardColumnsInfo = entity.getBoardColumns().stream()
                 .map(bc -> new BoardColumnInfoDTO(bc.getId(), bc.getOrder(), bc.getKind()))
                 .toList();
@@ -87,9 +86,9 @@ public class BoardMenu {
 
     private void blockCard() throws SQLException {
         System.out.println("Informe o id do card que será bloqueado");
-        var cardId = scanner.nextLong();
+        var cardId = Long.parseLong(scanner.nextLine());
         System.out.println("Informe o motivo do bloqueio do card");
-        var reason = scanner.next();
+        var reason = scanner.nextLine(); // padronizando para nextLine
         var boardColumnsInfo = entity.getBoardColumns().stream()
                 .map(bc -> new BoardColumnInfoDTO(bc.getId(), bc.getOrder(), bc.getKind()))
                 .toList();
@@ -102,9 +101,9 @@ public class BoardMenu {
 
     private void unblockCard() throws SQLException {
         System.out.println("Informe o id do card que será desbloqueado");
-        var cardId = scanner.nextLong();
+        var cardId = Long.parseLong(scanner.nextLine());
         System.out.println("Informe o motivo do desbloqueio do card");
-        var reason = scanner.next();
+        var reason = scanner.nextLine(); // padronizando para nextLine
         try(var connection = getConnection()){
             new CardService(connection).unblock(cardId, reason);
         } catch (RuntimeException ex){
@@ -114,7 +113,7 @@ public class BoardMenu {
 
     private void cancelCard() throws SQLException {
         System.out.println("Informe o id do card que deseja mover para a coluna de cancelamento");
-        var cardId = scanner.nextLong();
+        var cardId = Long.parseLong(scanner.nextLine());
         var cancelColumn = entity.getCancelColumn();
         var boardColumnsInfo = entity.getBoardColumns().stream()
                 .map(bc -> new BoardColumnInfoDTO(bc.getId(), bc.getOrder(), bc.getKind()))
@@ -144,7 +143,7 @@ public class BoardMenu {
         while (!columnsIds.contains(selectedColumnId)){
             System.out.printf("Escolha uma coluna do board %s pelo id\n", entity.getName());
             entity.getBoardColumns().forEach(c -> System.out.printf("%s - %s [%s]\n", c.getId(), c.getName(), c.getKind()));
-            selectedColumnId = scanner.nextLong();
+            selectedColumnId = Long.parseLong(scanner.nextLine());
         }
         try(var connection = getConnection()){
             var column = new BoardColumnQueryService(connection).findById(selectedColumnId);
@@ -158,8 +157,8 @@ public class BoardMenu {
 
     private void showCard() throws SQLException {
         System.out.println("Informe o id do card que deseja visualizar");
-        var selectedCardId = scanner.nextLong();
-        try(var connection  = getConnection()){
+        var selectedCardId = Long.parseLong(scanner.nextLine());
+        try(var connection = getConnection()){
             new CardQueryService(connection).findById(selectedCardId)
                     .ifPresentOrElse(
                             c -> {

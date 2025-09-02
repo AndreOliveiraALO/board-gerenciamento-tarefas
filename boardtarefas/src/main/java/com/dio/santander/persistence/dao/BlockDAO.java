@@ -1,14 +1,11 @@
 package com.dio.santander.persistence.dao;
 
-//import lombok.AllArgsConstructor;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.OffsetDateTime;
 
 import static com.dio.santander.persistence.converter.OffsetDateTimeConverter.toTimestamp;
 
-//@AllArgsConstructor
 public class BlockDAO {
 
     private final Connection connection; 

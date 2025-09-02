@@ -14,8 +14,6 @@ import static com.dio.santander.persistence.entity.BoardColumnKindEnum.CANCEL;
 import static com.dio.santander.persistence.entity.BoardColumnKindEnum.FINAL;
 import com.dio.santander.persistence.entity.CardEntity;
 
-
-//@AllArgsConstructor
 public class CardService {
 
     private final Connection connection;

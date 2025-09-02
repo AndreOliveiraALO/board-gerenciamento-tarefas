@@ -10,8 +10,6 @@ public class BoardColumnEntity {
     private int order;
     private BoardColumnKindEnum kind;
     private BoardEntity board = new BoardEntity();
-    //@ToString.Exclude
-    //@EqualsAndHashCode.Exclude
     private List<CardEntity> cards = new ArrayList<>();
    
     public BoardColumnEntity() {

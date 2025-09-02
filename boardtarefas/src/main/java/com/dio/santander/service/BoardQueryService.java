@@ -9,7 +9,6 @@ import com.dio.santander.persistence.dao.BoardColumnDAO;
 import com.dio.santander.persistence.dao.BoardDAO;
 import com.dio.santander.persistence.entity.BoardEntity;
 
-//@AllArgsConstructor
 public class BoardQueryService {
 
     private final Connection connection;

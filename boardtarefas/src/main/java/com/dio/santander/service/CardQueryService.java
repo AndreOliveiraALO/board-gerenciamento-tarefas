@@ -7,7 +7,6 @@ import java.util.Optional;
 import com.dio.santander.dto.CardDetailsDTO;
 import com.dio.santander.persistence.dao.CardDAO;
 
-//@AllArgsConstructor
 public class CardQueryService {
 
     private final Connection connection;

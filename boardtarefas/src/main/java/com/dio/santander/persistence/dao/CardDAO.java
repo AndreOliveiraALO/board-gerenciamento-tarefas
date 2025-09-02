@@ -9,7 +9,6 @@ import com.dio.santander.dto.CardDetailsDTO;
 import static com.dio.santander.persistence.converter.OffsetDateTimeConverter.toOffsetDateTime;
 import com.dio.santander.persistence.entity.CardEntity;
 
-//@AllArgsConstructor
 public class CardDAO {
     
     private Connection connection;
@@ -17,21 +16,6 @@ public class CardDAO {
     public CardDAO(Connection connection) {
         this.connection = connection;
     }
-
-    /*public CardEntity insert(final CardEntity entity) throws SQLException {
-        var sql = "INSERT INTO CARDS (title, description, board_column_id) values (?, ?, ?);";
-        try(var statement = connection.prepareStatement(sql)){
-            var i = 1;
-            statement.setString(i ++, entity.getTitle());
-            statement.setString(i ++, entity.getDescription());
-            statement.setLong(i, entity.getBoardColumn().getId());
-            statement.executeUpdate();
-            if (statement instanceof StatementImpl impl){
-                entity.setId(impl.getLastInsertID());
-            }
-        }
-        return entity;
-    }*/
 
     public CardEntity insert(final CardEntity entity) throws SQLException {
         var sql = "INSERT INTO cards (title, description, board_column_id) VALUES (?, ?, ?) RETURNING id;";
@@ -51,7 +35,6 @@ public class CardDAO {
         return entity;
     }
 
-
     public void moveToColumn(final Long columnId, final Long cardId) throws SQLException{
         var sql = "UPDATE CARDS SET board_column_id = ? WHERE id = ?;";
         try(var statement = connection.prepareStatement(sql)){
@@ -65,7 +48,7 @@ public class CardDAO {
     public Optional<CardDetailsDTO> findById(final Long id) throws SQLException {
         var sql =
                 """
-                SELECT c.id,
+                SELECT c.id as cards_id,
                        c.title,
                        c.description,
                        b.blocked_at,
@@ -89,15 +72,15 @@ public class CardDAO {
             var resultSet = statement.getResultSet();
             if (resultSet.next()){
                 var dto = new CardDetailsDTO(
-                        resultSet.getLong("c.id"),
-                        resultSet.getString("c.title"),
-                        resultSet.getString("c.description"),
-                        nonNull(resultSet.getString("b.block_reason")),
-                        toOffsetDateTime(resultSet.getTimestamp("b.blocked_at")),
-                        resultSet.getString("b.block_reason"),
+                        resultSet.getLong("cards_id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        nonNull(resultSet.getString("block_reason")),
+                        toOffsetDateTime(resultSet.getTimestamp("blocked_at")),
+                        resultSet.getString("block_reason"),
                         resultSet.getInt("blocks_amount"),
-                        resultSet.getLong("c.board_column_id"),
-                        resultSet.getString("bc.name")
+                        resultSet.getLong("board_column_id"),
+                        resultSet.getString("name")
                 );
                 return Optional.of(dto);
             }

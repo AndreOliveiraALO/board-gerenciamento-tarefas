@@ -10,9 +10,7 @@ import static com.dio.santander.persistence.entity.BoardColumnKindEnum.INITIAL;
 public class BoardEntity {
 
     private Long id;
-    private String name;
-    //@ToString.Exclude
-    //@EqualsAndHashCode.Exclude
+    private String name;    
     private List<BoardColumnEntity> boardColumns = new ArrayList<>();
 
     public BoardColumnEntity getInitialColumn(){

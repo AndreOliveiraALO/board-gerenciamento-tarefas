@@ -7,7 +7,6 @@ import java.util.Optional;
 import com.dio.santander.persistence.dao.BoardColumnDAO;
 import com.dio.santander.persistence.entity.BoardColumnEntity;
 
-//@AllArgsConstructor
 public class BoardColumnQueryService {
 
     private final Connection connection;

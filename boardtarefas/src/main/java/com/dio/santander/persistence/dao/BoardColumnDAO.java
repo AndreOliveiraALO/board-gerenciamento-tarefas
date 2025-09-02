@@ -12,7 +12,6 @@ import com.dio.santander.persistence.entity.BoardColumnEntity;
 import static com.dio.santander.persistence.entity.BoardColumnKindEnum.findByName;
 import com.dio.santander.persistence.entity.CardEntity;
 
-//@RequiredArgsConstructor
 public class BoardColumnDAO {   
 
     private final Connection connection;
@@ -20,22 +19,6 @@ public class BoardColumnDAO {
     public BoardColumnDAO(Connection connection) {
         this.connection = connection;
     }
-
-    /*public BoardColumnEntity insert(final BoardColumnEntity entity) throws SQLException {
-        var sql = "INSERT INTO BOARDS_COLUMNS (name, `order`, kind, board_id) VALUES (?, ?, ?, ?);";
-        try(var statement = connection.prepareStatement(sql)){
-            var i = 1;
-            statement.setString(i ++, entity.getName());
-            statement.setInt(i ++, entity.getOrder());
-            statement.setString(i ++, entity.getKind().name());
-            statement.setLong(i, entity.getBoard().getId());
-            statement.executeUpdate();
-            if (statement instanceof StatementImpl impl){
-                entity.setId(impl.getLastInsertID());
-            }
-            return entity;
-        }
-    }*/
 
     public BoardColumnEntity insert(final BoardColumnEntity entity) throws SQLException {
         // Usando RETURNING id para capturar o auto incremento
@@ -56,7 +39,6 @@ public class BoardColumnDAO {
             return entity;
         }
     }
-
 
     public List<BoardColumnEntity> findByBoardId(final Long boardId) throws SQLException{
         List<BoardColumnEntity> entities = new ArrayList<>();
@@ -81,7 +63,7 @@ public class BoardColumnDAO {
         List<BoardColumnDTO> dtos = new ArrayList<>();
         var sql =
                 """
-                SELECT bc.id,
+                SELECT bc.id as boards_columns_id,
                        bc.name,
                        bc.kind,
                        (SELECT COUNT(c.id)
@@ -97,9 +79,9 @@ public class BoardColumnDAO {
             var resultSet = statement.getResultSet();
             while (resultSet.next()){
                 var dto = new BoardColumnDTO(
-                        resultSet.getLong("bc.id"),
-                        resultSet.getString("bc.name"),
-                        findByName(resultSet.getString("bc.kind")),
+                        resultSet.getLong("boards_columns_id"),
+                        resultSet.getString("name"),
+                        findByName(resultSet.getString("kind")),
                         resultSet.getInt("cards_amount")
                 );
                 dtos.add(dto);
@@ -113,7 +95,7 @@ public class BoardColumnDAO {
         """
         SELECT bc.name,
                bc.kind,
-               c.id,
+               c.id as cards_id,
                c.title,
                c.description
           FROM BOARDS_COLUMNS bc
@@ -127,16 +109,16 @@ public class BoardColumnDAO {
             var resultSet = statement.getResultSet();
             if (resultSet.next()){
                 var entity = new BoardColumnEntity();
-                entity.setName(resultSet.getString("bc.name"));
-                entity.setKind(findByName(resultSet.getString("bc.kind")));
+                entity.setName(resultSet.getString("name"));
+                entity.setKind(findByName(resultSet.getString("kind")));
                 do {
                     var card = new CardEntity();
-                    if (isNull(resultSet.getString("c.title"))){
+                    if (isNull(resultSet.getString("title"))){
                         break;
                     }
-                    card.setId(resultSet.getLong("c.id"));
-                    card.setTitle(resultSet.getString("c.title"));
-                    card.setDescription(resultSet.getString("c.description"));
+                    card.setId(resultSet.getLong("cards_id"));
+                    card.setTitle(resultSet.getString("title"));
+                    card.setDescription(resultSet.getString("description"));
                     entity.getCards().add(card);
                 }while (resultSet.next());
                 return Optional.of(entity);
